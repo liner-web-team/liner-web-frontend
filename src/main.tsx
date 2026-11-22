@@ -3,12 +3,12 @@ import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router'
 import './index.css'
 import App from './App.tsx'
-
+import { AuthPage } from './pages/AuthPage.tsx'
 
 const router = createBrowserRouter([
   { path: '/', element: <App /> },
-  { path: '/login', element: <p>this is a route to Login</p> },
-  { path: '/register', element: <p>this is a route to Register</p> },
+  { path: '/login', element: <AuthPage /> },
+  { path: '/register', element: <AuthPage /> },
 ])
 
 createRoot(document.getElementById('root')!).render(
