@@ -1,19 +1,21 @@
 import { getMostListened } from '../../data/mockSongs'
-import { AlbumCard } from './AlbumCard'
-import { TrophyIcon } from './Icons'
-import { SectionHeading } from './SectionHeading'
+import { useMockQuery } from '../../lib/useMockQuery'
+import Icon from '../ui/Icon'
+import EmptyState from '../ui/EmptyState'
+import ErrorState from '../ui/ErrorState'
+import { CardSkeletons } from '../ui/Skeleton'
+import AlbumCard from './AlbumCard'
 
-export function MostListened() {
-  const songs = getMostListened(10)
-
+export default function MostListened() {
+  const q = useMockQuery(getMostListened, 900)
   return (
-    <section className="dash-section">
-      <SectionHeading icon={<TrophyIcon />} title="Most listened of all time" />
-      <div className="album-row album-row--scroll">
-        {songs.map((song) => (
-          <AlbumCard key={song.id} song={song} queue={songs} size="md" />
-        ))}
-      </div>
+    <section className="ln-section" aria-labelledby="h-most">
+      <h2 id="h-most" className="ln-heading"><Icon name="trophy" /> Most listened of all time</h2>
+      {q.status === 'loading' && <CardSkeletons count={6} />}
+      {q.status === 'error' && <ErrorState onRetry={q.retry} />}
+      {q.status === 'success' && (q.data.length === 0
+        ? <EmptyState icon="trophy" title="No listening history yet" text="Your top songs will build up over time." />
+        : <div className="ln-scroller">{q.data.map((s) => <AlbumCard key={s.id} song={s} queue={q.data} />)}</div>)}
     </section>
   )
 }

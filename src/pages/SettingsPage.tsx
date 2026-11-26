@@ -1,45 +1,32 @@
-import { useNavigate } from 'react-router'
-import { useAuthStore } from '../store/auth.store'
+import { useSignOut } from '../lib/authAdapter'
+import { usePlayer } from '../store/player.context'
+import Icon from '../components/ui/Icon'
 
-export function SettingsPage() {
-  const user = useAuthStore((state) => state.user)
-  const signOut = useAuthStore((state) => state.signOut)
-  const navigate = useNavigate()
+export default function SettingsPage() {
+  const signOut = useSignOut()
+  const { volume, setVolume, library, clearLibrary } = usePlayer()
 
   return (
-    <div className="dash-page">
-      <h1 className="dash-page__title">Settings</h1>
-
-      <div className="settings-card">
-        <h2>Account</h2>
-        <p>
-          <strong>Name:</strong> {user?.name}
-        </p>
-        <p>
-          <strong>Email:</strong> {user?.email}
-        </p>
-        <p className="settings-card__note">
-          Authentication is mock/frontend-only. No backend account exists yet.
-        </p>
-        <button
-          type="button"
-          className="settings-card__button"
-          onClick={() => {
-            signOut()
-            navigate('/login', { replace: true })
-          }}
-        >
-          Log out
-        </button>
+    <section className="ln-section">
+      <h2 className="ln-heading"><Icon name="settings" /> Settings</h2>
+      <div className="ln-panel ln-settings">
+        <label className="ln-setting">
+          <span>Volume</span>
+          <input type="range" className="ln-range" min={0} max={1} step={0.01} value={volume}
+            onChange={(e) => setVolume(Number(e.target.value))}
+            style={{ ['--fill' as string]: `${volume * 100}%`, maxWidth: 220 }} />
+        </label>
+        <div className="ln-setting">
+          <span>Library ({library.length} saved)</span>
+          <button type="button" className="ln-btn" onClick={clearLibrary} disabled={library.length === 0}>Clear library</button>
+        </div>
+        <div className="ln-setting">
+          <span>Account</span>
+          <button type="button" className="ln-btn ln-btn--dark" onClick={signOut}>
+            <Icon name="logout" size={16} /> Sign out
+          </button>
+        </div>
       </div>
-
-      <div className="settings-card">
-        <h2>Playback</h2>
-        <p className="settings-card__note">
-          Demo tracks with audio URLs use public sample files. Tracks without a URL show an
-          unavailable state until a licensed music API is connected.
-        </p>
-      </div>
-    </div>
+    </section>
   )
 }

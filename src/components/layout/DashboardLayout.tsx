@@ -1,43 +1,22 @@
-import { useState } from 'react'
-import { Navigate, Outlet } from 'react-router'
-import { useAuthStore } from '../../store/auth.store'
-import { MusicPlayer } from '../player/MusicPlayer'
-import { Sidebar } from './Sidebar'
+import { Outlet } from 'react-router'
+import { PlayerProvider } from '../../store/player.context'
+import Sidebar from './Sidebar'
+import TopBar from './TopBar'
+import MusicPlayer from '../player/MusicPlayer'
 import '../../styles/dashboard.css'
+import '../../styles/dashboard-extra.css'
 
-export function DashboardLayout() {
-  const user = useAuthStore((state) => state.user)
-  const [mobileOpen, setMobileOpen] = useState(false)
-
-  if (!user) {
-    return <Navigate to="/login" replace />
-  }
-
+export default function DashboardLayout() {
   return (
-    <div className="dash-shell">
-      <Sidebar mobileOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
-
-      <div className="dash-main">
-        <header className="dash-topbar">
-          <button
-            type="button"
-            className="dash-topbar__menu"
-            aria-label="Open navigation"
-            onClick={() => setMobileOpen(true)}
-          >
-            <span />
-            <span />
-            <span />
-          </button>
-          <p className="dash-topbar__greeting">Welcome back, {user.name}</p>
-        </header>
-
-        <div className="dash-content">
+    <PlayerProvider>
+      <div className="ln-app">
+        <Sidebar />
+        <main className="ln-main">
+          <TopBar />
           <Outlet />
-        </div>
+        </main>
+        <MusicPlayer />
       </div>
-
-      <MusicPlayer />
-    </div>
+    </PlayerProvider>
   )
 }

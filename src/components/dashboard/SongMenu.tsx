@@ -1,79 +1,48 @@
 import { useEffect, useRef, useState } from 'react'
-import { useLibraryStore } from '../../store/library.store'
-import type { Song } from '../../types/music'
-import { MoreIcon } from './Icons'
+import type { Song } from '../../data/mockSongs'
+import { usePlayer } from '../../store/player.context'
+import Icon from '../ui/Icon'
 
-type SongMenuProps = {
-  song: Song
-}
-
-export function SongMenu({ song }: SongMenuProps) {
+export default function SongMenu({ song }: { song: Song }) {
   const [open, setOpen] = useState(false)
-  const rootRef = useRef<HTMLDivElement>(null)
-  const isSaved = useLibraryStore((state) => state.isSaved(song.id))
-  const toggleLibrary = useLibraryStore((state) => state.toggleLibrary)
+  const ref = useRef<HTMLDivElement>(null)
+  const { play, isSaved, toggleLibrary } = usePlayer()
+  const saved = isSaved(song.id)
 
   useEffect(() => {
     if (!open) return
-
-    function onPointerDown(event: MouseEvent) {
-      if (!rootRef.current?.contains(event.target as Node)) setOpen(false)
+    const onMouse = (e: MouseEvent) => {
+      if (!ref.current?.contains(e.target as Node)) setOpen(false)
     }
-
-    function onKey(event: KeyboardEvent) {
-      if (event.key === 'Escape') setOpen(false)
-    }
-
-    document.addEventListener('mousedown', onPointerDown)
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false) }
+    document.addEventListener('mousedown', onMouse)
     document.addEventListener('keydown', onKey)
     return () => {
-      document.removeEventListener('mousedown', onPointerDown)
+      document.removeEventListener('mousedown', onMouse)
       document.removeEventListener('keydown', onKey)
     }
   }, [open])
 
   return (
-    <div className="song-menu" ref={rootRef}>
+    <div
+      className="ln-menu" ref={ref}
+      onClick={(e) => e.stopPropagation()}
+      onKeyDown={(e) => e.stopPropagation()}
+    >
       <button
-        type="button"
-        className="song-menu__trigger"
-        aria-label={`More options for ${song.title}`}
-        aria-haspopup="menu"
-        aria-expanded={open}
-        onClick={(event) => {
-          event.stopPropagation()
-          setOpen((value) => !value)
-        }}
+        type="button" className="ln-icon-btn" aria-label={`More options for ${song.title}`}
+        aria-haspopup="menu" aria-expanded={open} onClick={() => setOpen((o) => !o)}
       >
-        <MoreIcon />
+        <Icon name="dots" />
       </button>
-
-      {open ? (
-        <div className="song-menu__panel" role="menu">
-          <button
-            type="button"
-            role="menuitem"
-            onClick={(event) => {
-              event.stopPropagation()
-              toggleLibrary(song.id)
-              setOpen(false)
-            }}
-          >
-            {isSaved ? 'Remove from library' : 'Add to library'}
-          </button>
-          <button
-            type="button"
-            role="menuitem"
-            onClick={(event) => {
-              event.stopPropagation()
-              void navigator.clipboard?.writeText(`${song.title} — ${song.artist}`)
-              setOpen(false)
-            }}
-          >
-            Copy song info
+      {open && (
+        <div className="ln-menu__panel" role="menu">
+          <button type="button" role="menuitem" onClick={() => { play(song); setOpen(false) }}>Play now</button>
+          <button type="button" role="menuitem" onClick={() => { toggleLibrary(song.id); setOpen(false) }}>
+            {saved ? 'Remove from library' : 'Add to library'}
           </button>
         </div>
-      ) : null}
+      )}
     </div>
   )
 }

@@ -1,38 +1,29 @@
-import { formatTime } from '../../lib/music/formatTime'
-import { usePlayerStore } from '../../store/player.store'
-import type { Song } from '../../types/music'
-import { SongMenu } from './SongMenu'
+import type { Song } from '../../data/mockSongs'
+import { formatTime } from '../../lib/format'
+import { usePlayer } from '../../store/player.context'
+import SongMenu from './SongMenu'
 
-type SongRowProps = {
-  song: Song
-  queue?: Song[]
-}
+type Props = { song: Song; queue: Song[] }
 
-export function SongRow({ song, queue }: SongRowProps) {
-  const currentSong = usePlayerStore((state) => state.currentSong)
-  const isPlaying = usePlayerStore((state) => state.isPlaying)
-  const playSong = usePlayerStore((state) => state.playSong)
+export default function SongRow({ song, queue }: Props) {
+  const { play, currentSong } = usePlayer()
   const active = currentSong?.id === song.id
+  const start = () => play(song, queue)
 
   return (
-    <button
-      type="button"
-      className={`song-row ${active ? 'is-active' : ''} ${active && isPlaying ? 'is-playing' : ''}`}
-      onClick={() => playSong(song, queue)}
+    <div
+      className={`ln-row${active ? ' is-active' : ''}`}
+      role="button" tabIndex={0}
+      onClick={start}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); start() } }}
     >
-      <img className="song-row__art" src={song.artworkUrl} alt="" />
-      <span className="song-row__meta">
-        <span className="song-row__title">{song.title}</span>
-        <span className="song-row__artist">{song.artist}</span>
-      </span>
-      <span className="song-row__duration">{formatTime(song.durationSec)}</span>
-      <span
-        className="song-row__menu"
-        onClick={(event) => event.stopPropagation()}
-        onKeyDown={(event) => event.stopPropagation()}
-      >
-        <SongMenu song={song} />
-      </span>
-    </button>
+      <img className="ln-row__art" src={song.artworkUrl} alt="" />
+      <div className="ln-row__text">
+        <span className="ln-row__title">{song.title}</span>
+        <span className="ln-row__artist">{song.artist}</span>
+      </div>
+      <span className="ln-row__time">{formatTime(song.durationSec)}</span>
+      <SongMenu song={song} />
+    </div>
   )
 }

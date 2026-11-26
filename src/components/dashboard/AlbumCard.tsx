@@ -1,26 +1,19 @@
-import { usePlayerStore } from '../../store/player.store'
-import type { Song } from '../../types/music'
+import type { Song } from '../../data/mockSongs'
+import { usePlayer } from '../../store/player.context'
 
-type AlbumCardProps = {
-  song: Song
-  queue?: Song[]
-  size?: 'md' | 'lg'
-}
+type Props = { song: Song; queue: Song[]; size?: 'md' | 'lg' }
 
-export function AlbumCard({ song, queue, size = 'md' }: AlbumCardProps) {
-  const playSong = usePlayerStore((state) => state.playSong)
-  const currentSong = usePlayerStore((state) => state.currentSong)
-  const active = currentSong?.id === song.id
-
+export default function AlbumCard({ song, queue, size = 'md' }: Props) {
+  const { play, currentSong } = usePlayer()
   return (
     <button
       type="button"
-      className={`album-card album-card--${size} ${active ? 'is-active' : ''}`}
-      onClick={() => playSong(song, queue)}
+      className={`ln-card ln-card--${size}${currentSong?.id === song.id ? ' is-active' : ''}`}
+      onClick={() => play(song, queue)}
     >
-      <img className="album-card__art" src={song.artworkUrl} alt="" />
-      <span className="album-card__title">{song.title}</span>
-      <span className="album-card__artist">{song.artist}</span>
+      <img className="ln-card__art" src={song.artworkUrl} alt={`${song.title} cover`} />
+      <span className="ln-card__title">{song.title}</span>
+      <span className="ln-card__artist">{song.artist}</span>
     </button>
   )
 }

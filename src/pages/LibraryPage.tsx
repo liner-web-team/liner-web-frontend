@@ -1,23 +1,28 @@
-import { SongRow } from '../components/dashboard/SongRow'
-import { useLibraryStore } from '../store/library.store'
+import { Link } from 'react-router'
+import { songs } from '../data/mockSongs'
+import { usePlayer } from '../store/player.context'
+import SongRow from '../components/dashboard/SongRow'
+import EmptyState from '../components/ui/EmptyState'
+import Icon from '../components/ui/Icon'
 
-export function LibraryPage() {
-  const savedSongs = useLibraryStore((state) => state.getSavedSongs())
+export default function LibraryPage() {
+  const { library } = usePlayer()
+  const saved = songs.filter((s) => library.includes(s.id))
 
   return (
-    <div className="dash-page">
-      <h1 className="dash-page__title">Library</h1>
-      <p className="dash-page__subtitle">Songs you’ve saved on this device (mock).</p>
-
-      <div className="dash-list-panel">
-        {savedSongs.length ? (
-          savedSongs.map((song) => <SongRow key={song.id} song={song} queue={savedSongs} />)
-        ) : (
-          <p className="dash-empty">
-            Your library is empty. Use a song’s ⋮ menu to add tracks.
-          </p>
-        )}
-      </div>
-    </div>
+    <section className="ln-section">
+      <h2 className="ln-heading"><Icon name="library" /> Your library</h2>
+      {saved.length === 0 ? (
+        <EmptyState
+          icon="library" title="Your library is empty"
+          text="Open a song’s menu and choose “Add to library”."
+          action={<Link to="/search" className="ln-btn ln-btn--dark">Find songs</Link>}
+        />
+      ) : (
+        <div className="ln-panel ln-two-col">
+          {saved.map((s) => <SongRow key={s.id} song={s} queue={saved} />)}
+        </div>
+      )}
+    </section>
   )
 }

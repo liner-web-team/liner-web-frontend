@@ -1,14 +1,13 @@
-import { ListeningNow } from '../components/dashboard/ListeningNow'
-import { MostListened } from '../components/dashboard/MostListened'
-import { RecentlyPlayed } from '../components/dashboard/RecentlyPlayed'
+import ListeningNow from '../components/dashboard/ListeningNow'
+import RecentlyPlayed from '../components/dashboard/RecentlyPlayed'
+import MostListened from '../components/dashboard/MostListened'
 
-export function HomePage() {
+export default function HomePage() {
   return (
-    <div className="dash-page">
-      <h1 className="dash-page__title">Home</h1>
+    <>
       <ListeningNow />
       <RecentlyPlayed />
       <MostListened />
-    </div>
+    </>
   )
 }
