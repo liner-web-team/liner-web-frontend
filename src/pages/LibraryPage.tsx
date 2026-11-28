@@ -1,6 +1,6 @@
 import { Link } from 'react-router'
 import { songs } from '../data/mockSongs'
-import { usePlayer } from '../store/player.context'
+import { usePlayer } from '../providers/player.context'
 import SongRow from '../components/dashboard/SongRow'
 import EmptyState from '../components/ui/EmptyState'
 import Icon from '../components/ui/Icon'

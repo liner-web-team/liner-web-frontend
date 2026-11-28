@@ -1,4 +1,5 @@
 import type { AuthResult, SignInPayload, SignUpPayload } from '../../types/auth'
+import type { IAuthService } from '../../interfaces/auth-service.interface'
 
 const MOCK_DELAY_MS = 900
 
@@ -57,4 +58,10 @@ export async function mockSignUp(payload: SignUpPayload): Promise<AuthResult> {
       email,
     },
   }
+}
+
+// Тестовая реализация контракта сервиса авторизации Liner.
+export const mockAuthService: IAuthService = {
+  signIn: mockSignIn,
+  signUp: mockSignUp,
 }

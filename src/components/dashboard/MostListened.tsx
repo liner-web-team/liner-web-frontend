@@ -1,5 +1,5 @@
 import { getMostListened } from '../../data/mockSongs'
-import { useMockQuery } from '../../lib/useMockQuery'
+import { useMockQuery } from '../../hooks/useMockQuery'
 import Icon from '../ui/Icon'
 import EmptyState from '../ui/EmptyState'
 import ErrorState from '../ui/ErrorState'

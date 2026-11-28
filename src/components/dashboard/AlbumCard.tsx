@@ -1,5 +1,5 @@
-import type { Song } from '../../data/mockSongs'
-import { usePlayer } from '../../store/player.context'
+import type { Song } from '../../types/music'
+import { usePlayer } from '../../providers/player.context'
 
 type Props = { song: Song; queue: Song[]; size?: 'md' | 'lg' }
 

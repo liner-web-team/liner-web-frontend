@@ -2,9 +2,10 @@ import {
   createContext, useCallback, useContext, useEffect, useMemo, useRef, useState,
   type ReactNode,
 } from 'react'
-import { songs as catalog, type Song } from '../data/mockSongs'
 
-export type RepeatMode = 'off' | 'all' | 'one'
+import { songs as catalog } from '../data/mockSongs'
+import type { Song, RepeatMode } from '../types/music'
+
 
 type PlayerState = {
   currentSong: Song | null
@@ -43,7 +44,6 @@ function loadLibrary(): string[] {
 
 export function PlayerProvider({ children }: { children: ReactNode }) {
   const audioRef = useRef<HTMLAudioElement | null>(null)
-  if (audioRef.current === null && typeof Audio !== 'undefined') audioRef.current = new Audio()
 
   const [queue, setQueue] = useState<Song[]>(catalog)
   const [currentSong, setCurrentSong] = useState<Song | null>(null)
@@ -110,17 +110,29 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     step(-1)
   }, [step])
 
-  // Keep latest "ended" logic reachable from a stable listener.
-  const endedRef = useRef<() => void>(() => {})
-  endedRef.current = () => {
-    const audio = audioRef.current
-    if (repeat === 'one' && audio) { audio.currentTime = 0; void audio.play(); return }
-    step(1, true)
-  }
+
+  // Сохраняет актуальный обработчик завершения композиции.
+  const endedRef = useRef<() => void>(() => { })
 
   useEffect(() => {
-    const audio = audioRef.current
-    if (!audio) return
+    endedRef.current = () => {
+      const audio = audioRef.current
+
+      if (repeat === 'one' && audio) {
+        audio.currentTime = 0
+        void audio.play()
+        return
+      }
+
+      step(1, true)
+    }
+  }, [repeat, step])
+
+
+  useEffect(() => {
+    if (typeof Audio === 'undefined') return
+    const audio = new Audio()
+    audioRef.current = audio
     const onTime = () => setProgress(audio.currentTime)
     const onMeta = () => { if (Number.isFinite(audio.duration)) setDuration(audio.duration) }
     const onEnded = () => endedRef.current()
@@ -135,6 +147,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       audio.removeEventListener('ended', onEnded)
       audio.removeEventListener('error', onError)
       audio.pause()
+      audioRef.current = null
     }
   }, [])
 

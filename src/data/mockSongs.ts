@@ -1,19 +1,10 @@
-import { makeArtwork } from '../lib/artwork'
 
-export type Song = {
-  id: string
-  title: string
-  artist: string
-  album: string
-  artworkUrl: string
-  durationSec: number
-  /** Optional licensed/demo stream URL. Empty = playback unavailable. */
-  audioUrl?: string
-  /** ISO date; present = shows up in "Jump back in". */
-  lastPlayedAt?: string
-  /** Listening statistics for "Most listened of all time". */
-  playCount: number
-}
+// Тестовый музыкальный каталог Liner Web Frontend.
+// Использует единую модель Song из общего модуля типов.
+
+import { makeArtwork } from '../utils/artwork'
+import type { Song } from '../types/music'
+
 
 const raw: Omit<Song, 'artworkUrl'>[] = [
   { id: 's1', title: 'Paper Lanterns', artist: 'Mira Vale', album: 'Soft Static', durationSec: 214, playCount: 412, lastPlayedAt: '2026-11-22T17:10:00Z' },

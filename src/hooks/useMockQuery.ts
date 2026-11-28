@@ -9,8 +9,13 @@ type State<T> = { status: 'loading' } | { status: 'success'; data: T } | { statu
 export function useMockQuery<T>(load: () => T, delayMs = 500) {
   const [state, setState] = useState<State<T>>({ status: 'loading' })
   const [attempt, setAttempt] = useState(0)
+
   const loadRef = useRef(load)
-  loadRef.current = load
+
+  useEffect(() => {
+    loadRef.current = load
+  }, [load])
+
 
   useEffect(() => {
     const id = window.setTimeout(() => {
