@@ -1,0 +1,39 @@
+/* Top bar */
+.ln-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
+.ln-topbar__title { margin: 0; font-size: 14px; font-weight: 600; color: var(--ln-muted); }
+.ln-topbar .ln-menu__panel { right: 0; }
+.ln-avatar {
+  width: 40px; height: 40px; border-radius: 50%; border: 0; background: var(--ln-ink); color: #fff;
+  font-weight: 700; display: grid; place-items: center;
+}
+.ln-avatar--lg { width: 72px; height: 72px; font-size: 28px; flex-shrink: 0; }
+
+/* Empty / error states */
+.ln-state {
+  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px;
+  padding: 36px 20px; background: var(--ln-panel); border-radius: 28px;
+}
+.ln-state__icon { width: 52px; height: 52px; border-radius: 50%; background: var(--ln-surface); display: grid; place-items: center; margin-bottom: 6px; }
+.ln-state__title { margin: 0; font-weight: 700; }
+.ln-state__text { margin: 0 0 10px; color: var(--ln-muted); max-width: 360px; }
+.ln-state--error { background: #f3dede; }
+.ln-app a.ln-btn { text-decoration: none; }
+
+/* Skeletons */
+@keyframes ln-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+.ln-skel { display: block; background: #d2d2d2; border-radius: 6px; animation: ln-pulse 1.3s ease-in-out infinite; }
+.ln-skel--art { width: 52px; height: 52px; flex-shrink: 0; }
+.ln-skel--square { width: 100%; aspect-ratio: 1; border-radius: 8px; }
+.ln-skel--line { height: 12px; width: 80%; }
+.ln-skel--line.short { width: 45%; }
+.ln-skel-row { display: flex; align-items: center; gap: 14px; padding: 8px 10px; }
+.ln-skel-lines, .ln-skel-card { display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0; }
+
+/* Profile */
+.ln-profile { display: flex; align-items: center; gap: 20px; max-width: 640px; flex-wrap: wrap; }
+.ln-profile__text { flex: 1; min-width: 0; }
+.ln-profile__name { margin: 0; font-size: 22px; }
+.ln-profile__mail, .ln-profile__meta, .ln-note { margin: 2px 0 0; color: var(--ln-muted); overflow-wrap: anywhere; }
+.ln-note { margin-top: 14px; font-size: 13px; }
+
+@media (prefers-reduced-motion: reduce) { .ln-skel { animation: none; } }
