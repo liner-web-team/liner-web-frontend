@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router'
-import { useCurrentUser, useSignOut } from '../../lib/authAdapter'
+import { useCurrentUser, useSignOut } from '../../hooks/useAuth'
 
 const titles: Record<string, string> = {
   '/': 'Home',

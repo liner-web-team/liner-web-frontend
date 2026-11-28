@@ -1,5 +1,5 @@
-import { useCurrentUser, useSignOut } from '../lib/authAdapter'
-import { usePlayer } from '../store/player.context'
+import { useCurrentUser, useSignOut } from '../hooks/useAuth'
+import { usePlayer } from '../providers/player.context'
 import EmptyState from '../components/ui/EmptyState'
 
 export default function ProfilePage() {

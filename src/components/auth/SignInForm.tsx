@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router'
-import { hasErrors, validateSignIn, type SignInErrors } from '../../lib/auth/validation'
+import { hasErrors, validateSignIn, type SignInErrors } from './validation'
 import { useAuthStore } from '../../store/auth.store'
 import { Button } from '../ui/Button'
 import { PasswordField } from '../ui/PasswordField'

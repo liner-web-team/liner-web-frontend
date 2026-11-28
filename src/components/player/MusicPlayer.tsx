@@ -1,5 +1,5 @@
-import { formatTime } from '../../lib/format'
-import { usePlayer } from '../../store/player.context'
+import { formatTime } from '../../utils/formatTime'
+import { usePlayer } from '../../providers/player.context'
 import Icon from '../ui/Icon'
 
 export default function MusicPlayer() {

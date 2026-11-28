@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import type { Song } from '../../data/mockSongs'
-import { usePlayer } from '../../store/player.context'
+import type { Song } from '../../types/music'
+import { usePlayer } from '../../providers/player.context'
 import Icon from '../ui/Icon'
 
 export default function SongMenu({ song }: { song: Song }) {

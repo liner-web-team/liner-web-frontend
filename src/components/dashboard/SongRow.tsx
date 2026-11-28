@@ -1,6 +1,6 @@
-import type { Song } from '../../data/mockSongs'
-import { formatTime } from '../../lib/format'
-import { usePlayer } from '../../store/player.context'
+import type { Song } from '../../types/music'
+import { formatTime } from '../../utils/formatTime'
+import { usePlayer } from '../../providers/player.context'
 import SongMenu from './SongMenu'
 
 type Props = { song: Song; queue: Song[] }

@@ -1,12 +1,15 @@
+
 import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router'
-import { AuthLeftPanel } from '../components/auth/AuthLeftPanel'
-import { AuthTabs } from '../components/auth/AuthTabs'
-import { SignInForm } from '../components/auth/SignInForm'
-import { SignUpForm } from '../components/auth/SignUpForm'
-import { useAuthStore } from '../store/auth.store'
-import type { AuthMode } from '../types/auth'
-import '../styles/auth.css'
+
+import { AuthLeftPanel } from '../../components/auth/AuthLeftPanel'
+import { AuthTabs } from '../../components/auth/AuthTabs'
+import { SignInForm } from '../../components/auth/SignInForm'
+import { SignUpForm } from '../../components/auth/SignUpForm'
+import { useAuthStore } from '../../store/auth.store'
+import type { AuthMode } from '../../types/auth'
+import '../../styles/auth.css'
+
 
 function modeFromPath(pathname: string): AuthMode {
   return pathname.includes('register') ? 'signup' : 'signin'

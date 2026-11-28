@@ -1,5 +1,5 @@
-import { useSignOut } from '../lib/authAdapter'
-import { usePlayer } from '../store/player.context'
+import { useSignOut } from '../hooks/useAuth'
+import { usePlayer } from '../providers/player.context'
 import Icon from '../components/ui/Icon'
 
 export default function SettingsPage() {
